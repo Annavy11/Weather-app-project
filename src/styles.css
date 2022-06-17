@@ -16,10 +16,9 @@ a:hover {
     text-decoration: underline;
 }
 
-.container {
+.weather-prognosis {
     border-color: #2155CD;
     border-style: solid;
-    width: 80%;
 }
 
 .city {
