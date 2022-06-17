@@ -16,6 +16,12 @@ a:hover {
     text-decoration: underline;
 }
 
+.container {
+    border-color: #2155CD;
+    border-style: solid;
+    width: 80%;
+}
+
 .city {
     font-size: 40px;
     font-weight: bold;
