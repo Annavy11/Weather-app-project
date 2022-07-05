@@ -46,9 +46,16 @@ function searchCity(event) {
   let apiUrlCity = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&appid=${apiKey}&units=${unitMetric}`;
   function getCurrentTemp(response) {
     let currentTemp = document.querySelector("#temperature-current");
-    console.log(Math.round(response.data.main.temp));
     let currentCityTemperature = Math.round(response.data.main.temp);
+    let iconElement = document.querySelector("#weather-icon");
+    let descriptionElement = document.querySelector("#description");
+
+
     currentTemp.innerHTML = currentCityTemperature;
+    iconElement.setAttribute("src",`http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
+    descriptionElement.innerHTML = response.data.weather[0].description;
+
+
     //currentTemp.innerHTML = response;
     
   }
@@ -67,7 +74,7 @@ searchForm.addEventListener("click", searchCity);
 function getGpsCoords(showCoords) {
   let latitude = showCoords.coords.latitude;
   let longitude = showCoords.coords.longitude;
-
+  
   let apiGpsUrl =`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${unitMetric}`;
   
   function getCurrentGpsTemp(response) {
@@ -79,26 +86,39 @@ function getGpsCoords(showCoords) {
     let currentGpsCity = document.querySelector("#city");
     currentGpsCity.innerHTML = response.data.name;
     
+    let iconElement = document.querySelector("#weather-icon");
+    let descriptionElement = document.querySelector("#description");
+    let humidityElement = document.querySelector("#humidity");
+    let windElement = document.querySelector("#wind");
+    
+    iconElement.setAttribute("src",`http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
+    descriptionElement.innerHTML = response.data.weather[0].description;
+    humidityElement.innerHTML = response.data.humidity;
+    windElement.innerHTML = Math.round(response.data.wind_speed);
+    
   }
   axios.get(apiGpsUrl).then(getCurrentGpsTemp)
-
+  
 }
 
 function getCurrentPosition(event) {
   event.preventDefault();
-navigator.geolocation.getCurrentPosition(getGpsCoords);
+  navigator.geolocation.getCurrentPosition(getGpsCoords);
 }
 
 let gpsButton = document.querySelector("#gps-button");
 gpsButton.addEventListener("click", getCurrentPosition);
 
-/*
+
+
 //temperature unit change
 function celsius(event) {
   event.preventDefault();
   let currentTemp = document.querySelector("#temperature-current");
-  currentTemp.innerHTML = "17";
+  currentTemp.innerHTML = Math.round(celsiusTemperature);
 }
+
+//let celsiusTemperature = null;
 
 let cButton = document.querySelector("#celsius-link");
 cButton.addEventListener("click", celsius);
@@ -106,9 +126,10 @@ cButton.addEventListener("click", celsius);
 function fahrenheit(event) {
   event.preventDefault();
   let currentTemp = document.querySelector("#temperature-current");
-  currentTemp.innerHTML = "66";
+
+  let fahrenheitTemperature = (celsiusTemperature *9)/5+32;
+  currentTemp.innerHTML = Math.round(fahrenheitTemperature);
 }
 
 let fButton = document.querySelector("#fahrenheit-link");
 fButton.addEventListener("click", fahrenheit);
-*/
